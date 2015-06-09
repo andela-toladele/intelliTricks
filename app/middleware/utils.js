@@ -13,10 +13,11 @@ var UtilMethods = function(){
 
     // create new user and check for errors
     user.save(function(err) {
-      if (err)
-          res.send(err);
-
-      res.json({ message: 'User created!' });
+      if (err){
+        res.send(err);
+      }else{
+        res.json({ message: 'User created!' });
+      }    
 
     });
   }

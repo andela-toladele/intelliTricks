@@ -9,7 +9,7 @@ var mongoose   = require('mongoose');
 
 
 var database = require('./app/dbconfig/database');
-console.log(database);
+//console.log(database);
 mongoose.connect(database.url);
 
 

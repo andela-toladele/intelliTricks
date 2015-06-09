@@ -14,5 +14,8 @@
     "method-override": "^2.3.3",
     "mongoose": "^4.0.4",
     "morgan": "^1.5.3"
+  },
+  "dependencies": {
+    "dotenv": "^1.1.0"
   }
 }
