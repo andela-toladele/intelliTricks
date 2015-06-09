@@ -6,7 +6,7 @@ var AuthMethods = require('./middleware/authmethods');
 var UtilMethods = require('./middleware/utils');
 
 // expose the routes to our app with module.exports
-module.exports = function(router) {
+module.exports = function(router,passport) {
     
   // middleware to use for all requests
   router.use(function(req, res, next) {
@@ -21,57 +21,87 @@ module.exports = function(router) {
   router.route('/signup')
 
     // create a new user if there is no existing user with same username
-    .post(function(req, res) {
-      
-      UtilMethods.createUser(req, res, 'user');  
-        
-    });
+    .post(function(req, res, next) {
+      passport.authenticate('local-signup', function(err, user, info) {
+        if (err) {
+          return next(err); // will generate a 500 error
+        }
+        // Generate a JSON response reflecting authentication status
+        if (user.duplicate) {
+          return res.send(401,{ success : false, message : 'Same username found!' });
+        }else{
 
+          user.loggedIn = true;
+          req.login(user, function(err){
+            if(err){
+              return next(err);
+            }
+
+            return res.send({ success : true, message : 'User successfully registered!' });        
+          });
+        }
+      }
+    )(req, res, next);
+  }); 
+        
+   
 
   router.route('/adminsignup')
 
     // create a new user if there is no existing user with same username
-    .post(AuthMethods.isAdmin, function(req, res) {
-      
-      UtilMethods.createUser(req, res, 'admin');   
-   
-   });
+    .post(AuthMethods.isAdmin, function(req, res, next) {
+      passport.authenticate('local-signup', function(err, user, info) {
+        if (err) {
+          return next(err); // will generate a 500 error
+        }
+        // Generate a JSON response reflecting authentication status
+        if (user.duplicate) {
+          return res.send(401,{ success : false, message : 'Same username found!' });
+        }else{
+            
+            return res.send({ success : true, message : 'User successfully registered!' });        
+        
+        }
+    })(req, res, next);
+  });
+
+
+  // on routes that end in /signup
+  // ----------------------------------------------------
+  router.route('/logout')
+
+    // create a new user if there is no existing user with same username
+    .post(function(req, res, next) {
+      req.user = {};
+      return res.send({ success : true, message : 'User logged out!' });   
+    }); 
 
 
     
   router.route('/login')
 
-    // login user
-    .post(function(req, res) {
-      req.loggedIn = false;
-      User.findOne({username: req.body.username}, function(err, user) {
-        if (err)
-          res.send(err);
+    // create a new user if there is no existing user with same username
+    .post(function(req, res, next) {
+      passport.authenticate('local-login', function(err, user, info) {
+        if (err) {
 
-        console.log(user);
-
-        if(!user){
-          console.log(1);
-          res.json({ message: 'User does not exist!' });
-          return;
+          return next(err); // will generate a 500 error
         }
-
-        console.log(2);
-        console.log(req.body.password)
-
-        if(user.password !== req.body.password){
-
-          res.json({ message: 'Wrong password!' });
-          return;
+        // Generate a JSON response reflecting authentication status
+        if (!user) {
+          return res.send(401, 'Authentication failed!');
+        }else{
+          user.loggedIn = true;
+          req.login(user, function(err){
+            if(err){
+              return next(err);
+            }
+            return res.send({ success : true, message : 'User logged in!' });        
+          });
         }
-        
-        req.loggedIn = true;
-        req.userType = user.userType;
-        req.userName = user.username;
-        res.json(user);
-
-      });
-    });
+      }
+    )(req, res, next);
+  }); 
 
     router.route('/tricks')
     

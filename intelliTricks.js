@@ -6,17 +6,31 @@ var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
+var passport = require('passport');
+var flash    = require('connect-flash');
+var cookieParser = require('cookie-parser');
+var session      = require('express-session');
 
+require('dotenv').load();
 
 var database = require('./app/dbconfig/database');
 //console.log(database);
 mongoose.connect(database.url);
+
+require('./app/dbconfig/passport')(passport);
 
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser());
+
+// required for passport
+app.use(session({ secret: 'whatthefamisupposedtotype' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+
 
 var port = process.env.PORT || 8080;        // set our port
 
@@ -25,7 +39,7 @@ var port = process.env.PORT || 8080;        // set our port
 var router = express.Router();              // get an instance of the express Router
 
 // load the routes
-require('./app/routes')(router);
+require('./app/routes')(router,passport);
 
 
 
