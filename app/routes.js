@@ -22,13 +22,14 @@ module.exports = function(router,passport) {
 
     // create a new user if there is no existing user with same username
     .post(function(req, res, next) {
+      req.body.usertype = 'user';
       passport.authenticate('local-signup', function(err, user, info) {
         if (err) {
           return next(err); // will generate a 500 error
         }
         // Generate a JSON response reflecting authentication status
         if (user.duplicate) {
-          return res.send(401,{ success : false, message : 'Same username found!' });
+          return res.send(400,{ success : false, message : 'Same username found!' });
         }else{
 
           user.loggedIn = true;
@@ -47,9 +48,9 @@ module.exports = function(router,passport) {
    
 
   router.route('/adminsignup')
-
     // create a new user if there is no existing user with same username
     .post(AuthMethods.isAdmin, function(req, res, next) {
+      req.body.usertype = 'admin';
       passport.authenticate('local-signup', function(err, user, info) {
         if (err) {
           return next(err); // will generate a 500 error
@@ -182,7 +183,8 @@ module.exports = function(router,passport) {
       post.title = req.body.title;
       post.text = req.body.text;
       post.description = req.body.description;
-      post.category = req.body.category;
+      post.category.id = req.body.category.id;
+      post.category.name = req.body.category.name;
       post.tag = req.body.tag;
 
       post.save(function(err, postedData) {

@@ -44,7 +44,7 @@ module.exports = function(passport) {
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ 'username' :  username }, function(err, user) {
+        User.findOne({ $or: [{'username' :  username}, {'email': req.body.email} ]}, function(err, user) {
             // if there are any errors, return the error
             if (err)
                 return next(err);
@@ -62,8 +62,8 @@ module.exports = function(passport) {
               user.password = password;
               user.email = req.body.email;
               user.gender = req.body.gender;
-              user.userType = req.body.usertype || 'user';
-              console.log(user.generateHash(password));
+              user.userType = req.body.usertype;
+              
               user.password = user.generateHash(password);
 
               console.log(user);
@@ -71,7 +71,7 @@ module.exports = function(passport) {
               // save the user
               user.save(function(err) {
                   if (err)
-                      throw err;
+                    return next(err);
                   return next(null, user);
                 });
             }
@@ -106,10 +106,15 @@ module.exports = function(passport) {
             // check to see if theres already a user with that email
             if (! user) {
                 return next('authentication failed');
-            } else {
-              return next(null, user);
-              
             }
+
+            // if the user is found but the password is wrong
+            if (!user.validPassword(password)){
+              return next('authentication failed');
+            }
+
+            return next(null, user);        
+          
 
         });    
 

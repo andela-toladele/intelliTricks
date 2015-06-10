@@ -1,0 +1,40 @@
+<div ui-view>
+  <div class="container">
+    <div class="row push-down">
+      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <h1 class="page-title">Recent tricks</h1>
+      
+        <ul class="nav nav-pills">
+            <li class="active"><a ui-sref="http://laravel-tricks.com">Most recent</a></li><li><a ui-sref="http://laravel-tricks.com/popular">Most popular</a></li><li><a ui-sref="http://laravel-tricks.com/comments">Most discussed</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <p class="text-muted text-center">Place your ads here...</p>
+      </div>
+      
+      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <form method="GET" action="http://laravel-tricks.com/search" accept-charset="UTF-8">
+          <input type="text" name="q" class="search-box form-control" placeholder="Search..." value="">
+          <input style="display:none;" type="submit" value="search">
+        </form>
+      </div>
+    </div>
+
+    <div class="row js-trick-container" dir-paginate="trick in tricks | itemsPerPage: 9">      
+        
+          <div href="#" class="trick-card col-lg-4 col-md-6 col-sm-6 col-xs-12" trickobject="trick" trick-Item>
+          </div>          
+           
+    </div>
+
+    <div class="col-md-12 text-center">
+      <dir-pagination-controls boundary-links="true" template-url="bower_components/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
+    </div>
+
+  </div>
+
+  <script src="public/js/vendor/masonry.pkgd.min.js"></script>
+  <script>
+    $(function(){$container=$(".js-trick-container");$container.masonry({gutter:0,itemSelector:".trick-card",columnWidth:".trick-card"});$(".js-goto-trick a").click(function(e){e.stopPropagation()});$(".js-goto-trick").click(function(e){e.preventDefault();var t="http://laravel-tricks.com/tricks";var n=$(this).data("slug");window.location=t+"/"+n})})
+  </script>
+</div>

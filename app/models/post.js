@@ -7,17 +7,16 @@ var PostSchema   = new Schema({
     description: String,
     text: String,
     postedBy: String,
-    category: String,
+    category: {id: String, name: String},
     tag: String,
     numOfLikes: {type: Number, default: 0},
-    //editMode: {type: boolean, default: true},
+    viewed: {type: Number, default: 0},
     postDate: {type: Date, default: Date.now()},
     comments:[{
       text: String,
       commentBy: String,
       commentDate: {type: Date, default: Date.now()},
-      numOfLikes: {type: Number, default: 0}//,
-      //editMode: {type: boolean, default: true}
+      numOfLikes: {type: Number, default: 0}      
     }]
 });
 
