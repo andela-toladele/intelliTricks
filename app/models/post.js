@@ -9,14 +9,20 @@ var PostSchema   = new Schema({
     postedBy: String,
     category: {id: String, name: String},
     tag: String,
-    numOfLikes: {type: Number, default: 0},
+    likes: [{
+      username: String,
+      when: {type: Date, default: Date.now()}           
+    }],
     viewed: {type: Number, default: 0},
     postDate: {type: Date, default: Date.now()},
     comments:[{
       text: String,
       commentBy: String,
       commentDate: {type: Date, default: Date.now()},
-      numOfLikes: {type: Number, default: 0}      
+      likes: [{
+      username: String,
+      when: {type: Date, default: Date.now()}           
+      }]      
     }]
 });
 

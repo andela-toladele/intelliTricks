@@ -1,14 +1,13 @@
 'use strict';
 
-app.directive('trickItem', function(){
+myApp.directive('trickItem', function(){
 
   return {
     restrict: 'EA',
     require: ['^trickobject'],
     scope: {
-      dataobject: '=',
-      
+      trickobject: '='      
     },
-    templateUrl: 'directives/trick.html'
+    templateUrl: 'public/directives/trick.html'
   }
 });

@@ -38,7 +38,7 @@ module.exports = function(router,passport) {
               return next(err);
             }
 
-            return res.send({ success : true, message : 'User successfully registered!' });        
+            return res.send({ success : true, message : 'User successfully registered!', data: user});        
           });
         }
       }
@@ -60,7 +60,7 @@ module.exports = function(router,passport) {
           return res.send(401,{ success : false, message : 'Same username found!' });
         }else{
             
-            return res.send({ success : true, message : 'User successfully registered!' });        
+            return res.send({ success : true, message : 'User successfully registered!', data: user });        
         
         }
     })(req, res, next);
@@ -73,7 +73,7 @@ module.exports = function(router,passport) {
 
     // create a new user if there is no existing user with same username
     .post(function(req, res, next) {
-      req.user = {};
+      req.logout();
       return res.send({ success : true, message : 'User logged out!' });   
     }); 
 
@@ -97,7 +97,7 @@ module.exports = function(router,passport) {
             if(err){
               return next(err);
             }
-            return res.send({ success : true, message : 'User logged in!' });        
+            return res.json({ success : true, message : 'User logged in!', data: user});        
           });
         }
       }
@@ -120,7 +120,7 @@ module.exports = function(router,passport) {
 
       });
 
-    router.route('/tricks/categories')
+    router.route('/categories')
   
       // Get all the categories
       .get(function(req, res) {
@@ -133,7 +133,7 @@ module.exports = function(router,passport) {
 
     });
 
-    router.route('/tricks/categories/:category_name')
+    router.route('/categories/:category_name')
   
       // Get all tricks posted for a category
       .get(function(req, res) {
@@ -179,7 +179,7 @@ module.exports = function(router,passport) {
       
       var post = new Post();
 
-      post.postedBy = req.userName;
+      post.postedBy = req.user.username;
       post.title = req.body.title;
       post.text = req.body.text;
       post.description = req.body.description;
@@ -192,15 +192,15 @@ module.exports = function(router,passport) {
             res.send(err);
         req.postId = postedData._id;
 
-        res.json({ message: 'Post created!' });
+        res.json({ message: 'Post created!', id: postedData._id});
       });
     });
 
-    router.route('/tricks/:post_id/comments/create')
+    router.route('/tricks/comments/:post_id')
 
-    // create trick by a logged in user
+    // post comment by a logged in user
     .post(AuthMethods.isLoggedIn, function(req, res) {
-
+      req.body.commentBy = req.user.username;
       Post.findByIdAndUpdate(
        req.params.post_id,
        { $push: {"comments": req.body}},
@@ -209,25 +209,30 @@ module.exports = function(router,passport) {
           if(err){
             return res.send(err);
           }
-            return res.json({message: 'Comment posted!'});
+            return res.json({message: 'Comment posted!', data: model});
         });
       
     });
 
-    router.route('/tricks/categories')
+    router.route('/categories/create')
   
       // Get all the categories
       .post(AuthMethods.isAdmin, function(req, res) {
         var category = new Categories();
 
-        category.createdBy = req.user.name;
+        category.createdBy = req.user.username;
+
         category.name = req.body.name;
         
-        category.save(function(err) {
-          if (err)
-              res.send(err);
+        category.save(function(err, model) {
+          if(err){
+            if (err.code == 11000)
+              return res.send(422,{ success : false, message : 'Duplicate found!' });
+            return res.send(err);
+          }
           
-          res.json({ message: 'Category created!' });
+          
+          res.json({ message: 'Category created!', data: model});
         });
     });
 

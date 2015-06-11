@@ -26,6 +26,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+app.all('/*', function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
 // required for passport
 app.use(session({ secret: 'whatthefamisupposedtotype' })); // session secret
 app.use(passport.initialize());

@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html ng-app="myApp" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:og="http://ogp.me/ns#"
       xmlns:fb="https://www.facebook.com/2008/fbml">
     <head>
@@ -18,15 +18,19 @@
         <link rel="stylesheet" href="public/css/styles.min.css">
         <link rel="stylesheet" href="public/css/elements.css">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-ui-ace/ui-ace.js"></script>
         <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-        <script src="public/js/directive/trick.js"></script>
+        <script src="public/js/app/app.client.js"></script>
+        <script src="public/js/directives/trick.js"></script>
+        <script src="public/js/routes/routes.client.js"></script>
+        <script src="public/js/services/apiservices.js"></script>
         <script src="bower_components/angular-utils-pagination/dirPagination.js"></script>           
     </head>
 
     <body>
         <div id="wrap">
-          <div class="navbar navbar-default navbar-static-top">
+          <div class="navbar navbar-default navbar-static-top" ng-controller="LoginPaneCntrl">
             <div class="container">
               <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".header-collapse">
@@ -45,11 +49,11 @@
                 <ul class="nav navbar-nav">
 
                   <li>
-                    <a ui-sref="home({by: 'all'})">Browse</a>
+                    <a ui-sref="home" id="browse">Browse</a>
                   </li>
-                  <li ><a ui-sref="categories">Categories</a>
+                  <li ><a id="categories" ui-sref="categories">Categories</a>
                   </li>
-                  <li><a ui-sref="newtrick">Create New</a>
+                  <li><a id="createNew" ui-sref="newtrick">Create New</a>
                   </li>
 
                   <li class="visible-xs"><a ui-sref="register">Register</a></li>
@@ -63,7 +67,8 @@
                 </div>
 
                 <div class="navbar-right hidden-xs" ng-show="user.loggedIn">
-                  <b class="btn btn-primary">{{user.username}}</b>                  
+                  <b class="btn btn-primary">{{user.username}}</b>
+                  <button ng-click="logoutUser()" class="btn btn-primary">Logout</button>                  
                 </div>
               </div>
 
@@ -72,9 +77,9 @@
           
           <div ui-view></div>
 
-          <div id="footer" style="margin-top: 50px; margin-bottom: 0">
+          <div id="footer">
             <div class="container">
-              <p class="text-muted credit">Website built with <a ui-sref="http://laravel.com">Laravel</a> by <a target="_blank" href="http://twitter.com/stidges">Stidges</a> &amp; <a target="_blank" href="http://twitter.com/msurguy">Maks Surguy</a> | <a ui-sref="http://laravel-tricks.com/about">About</a>
+              <p class="text-muted credit">Website built with <a ui-sref="http://laravel.com">Laravel</a> by <a target="_blank" href="http://twitter.com/stidges">Stidges</a> &amp; <a target="_blank" href="http://twitter.com/msurguy">Maks Surguy</a>
                 <span class="pull-right">
                   <a target="_blank" href="http://twitter.com/laraveltricks" title="Follow updates"><i class="fa fa-twitter fa-lg"></i></a>
                   |
