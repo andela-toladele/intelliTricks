@@ -37,7 +37,7 @@ module.exports = function(passport) {
         passwordField : 'password',
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
-    function(req, username, password, next) {
+    function(req, username, password, done) {
         // asynchronous
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
@@ -47,13 +47,13 @@ module.exports = function(passport) {
         User.findOne({ $or: [{'username' :  username}, {'email': req.body.email} ]}, function(err, user) {
             // if there are any errors, return the error
             if (err)
-                return next(err);
+                return done(err);
 
 
             // check to see if theres already a user with that email
             if (user) {
                 user.duplicate = true;
-                return next(null, user);
+                return done(null, user);
             } else {
 
               // set the user's local credentials
@@ -71,8 +71,8 @@ module.exports = function(passport) {
               // save the user
               user.save(function(err) {
                   if (err)
-                    return next(err);
-                  return next(null, user);
+                    return done(err);
+                  return done(null, user);
                 });
             }
 
@@ -88,7 +88,7 @@ module.exports = function(passport) {
         passwordField : 'password',
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
-    function(req, username, password, next) {
+    function(req, username, password, done) {
 
         // asynchronous
         // User.findOne wont fire unless data is sent back
@@ -99,21 +99,21 @@ module.exports = function(passport) {
         User.findOne({ 'username' :  username }, function(err, user) {
             // if there are any errors, return the error
             if (err){
-              return next(err);
+              return done(err);
             }
             console.log(1);
               
             // check to see if theres already a user with that email
             if (! user) {
-                return next('authentication failed');
+                return done(null, null, 'authentication failed kwa');
             }
 
             // if the user is found but the password is wrong
             if (!user.validPassword(password)){
-              return next('authentication failed');
+              return done(null, null, 'authentication failed kwasia');
             }
 
-            return next(null, user);        
+            return done(null, user);        
           
 
         });    

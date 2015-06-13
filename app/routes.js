@@ -14,7 +14,16 @@ module.exports = function(router,passport) {
       // do logging
       console.log('Something is happening.');
       next(); // make sure we go to the next routes and don't stop here
-  }); 
+  });
+
+
+  router.route('/')
+
+    // create a new user if there is no existing user with same username
+    .get(function(req, res, next) {
+      req.logout();
+      return res.send({ success : true, message : 'API where you at!' });   
+    }); 
   
   // on routes that end in /signup
   // ----------------------------------------------------
@@ -29,7 +38,7 @@ module.exports = function(router,passport) {
         }
         // Generate a JSON response reflecting authentication status
         if (user.duplicate) {
-          return res.send(400,{ success : false, message : 'Same username found!' });
+          return res.send(401,{ success : false, message : 'Same username or email found!' });
         }else{
 
           user.loggedIn = true;
@@ -57,7 +66,7 @@ module.exports = function(router,passport) {
         }
         // Generate a JSON response reflecting authentication status
         if (user.duplicate) {
-          return res.send(401,{ success : false, message : 'Same username found!' });
+          return res.send(401,{ success : false, message : 'Same username or email found!' });
         }else{
             
             return res.send({ success : true, message : 'User successfully registered!', data: user });        
@@ -88,10 +97,15 @@ module.exports = function(router,passport) {
 
           return next(err); // will generate a 500 error
         }
+
+        console.log(user);
         // Generate a JSON response reflecting authentication status
         if (!user) {
+          
+
           return res.send(401, 'Authentication failed!');
         }else{
+          console.log(123);
           user.loggedIn = true;
           req.login(user, function(err){
             if(err){
@@ -104,21 +118,38 @@ module.exports = function(router,passport) {
     )(req, res, next);
   }); 
 
-    router.route('/tricks')
-    
-      // Get all tricks posted
-      .get(function(req, res) {
+  router.route('/tricks')
+  
+    // Get all tricks posted
+    .get(function(req, res) {
 
-        // Load all posts
-        Post.find(function(err, posts) {
+      // Load all posts
+      Post.find(function(err, posts) {
 
-          if (err)
-            res.send(err);
+        if (err)
+          res.send(err);
 
-          res.json(posts);
-        });
-
+        res.json(posts);
       });
+
+    });
+
+    router.route('/trick/:trick_id')
+  
+    // Get all tricks posted
+    .get(function(req, res) {
+
+      // Load all posts
+      Post.findByIdAndUpdate(req.params.trick_id, { $inc: {"viewed" : 1} }, function(err, post) {
+
+        if (err)
+          res.send(err);
+
+        res.json(post);
+      });
+
+    });
+
 
     router.route('/categories')
   
@@ -203,12 +234,13 @@ module.exports = function(router,passport) {
       req.body.commentBy = req.user.username;
       Post.findByIdAndUpdate(
        req.params.post_id,
-       { $push: {"comments": req.body}},
+       { $push: {"comments": {text: req.body.text, commentBy: req.body.commentBy}}},
        {  safe: true, upsert: true},
          function(err, model) {
           if(err){
             return res.send(err);
           }
+            console.log(model);
             return res.json({message: 'Comment posted!', data: model});
         });
       

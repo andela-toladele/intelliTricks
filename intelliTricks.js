@@ -38,6 +38,8 @@ app.use(session({ secret: 'whatthefamisupposedtotype' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
+app.use(express.static(__dirname + '/public'));
+
 
 var port = process.env.PORT || 8080;        // set our port
 
@@ -51,6 +53,12 @@ require('./app/routes')(router,passport);
 
 
 app.use('/api', router);
+
+
+// application -------------------------------------------------------------
+app.get('/*', function(req, res) {
+    res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+});
 
 // START THE SERVER
 // =============================================================================

@@ -14,7 +14,7 @@ var PostSchema   = new Schema({
       when: {type: Date, default: Date.now()}           
     }],
     viewed: {type: Number, default: 0},
-    postDate: {type: Date, default: Date.now()},
+    when: {type: Date, default: Date.now()},
     comments:[{
       text: String,
       commentBy: String,

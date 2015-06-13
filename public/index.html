@@ -15,17 +15,20 @@
         <meta name="description" content="Laravel tricks is a website that aggregates useful tips and tricks for Laravel PHP framework">
         <meta name="author" content="Stidges, @stidges  and Maks Surguy, @msurguy">
         <title>Repository of Programming Tricks | Intelli-Tricks.com</title>
-        <link rel="stylesheet" href="public/css/styles.min.css">
-        <link rel="stylesheet" href="public/css/elements.css">
+        <link rel="stylesheet" href="/css/styles.min.css" type="text/css">
+        <link rel="stylesheet" href="/css/elements.css" type="text/css">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-        <script src="bower_components/angular/angular.js"></script>
-        <script src="bower_components/angular-ui-ace/ui-ace.js"></script>
-        <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-        <script src="public/js/app/app.client.js"></script>
-        <script src="public/js/directives/trick.js"></script>
-        <script src="public/js/routes/routes.client.js"></script>
-        <script src="public/js/services/apiservices.js"></script>
-        <script src="bower_components/angular-utils-pagination/dirPagination.js"></script>           
+        <script src="/bower_components/angular/angular.js"></script>
+        <script src="/bower_components/ace-builds/src-min-noconflict/ace.js"></script> 
+        <script src="/bower_components/ace-builds/src-min-noconflict/ext-language_tools.js"></script>
+        <script src="/bower_components/angular-ui-ace/ui-ace.js"></script>
+        <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="/js/app/app.client.js"></script>
+        <script src="/js/directives/trick.js"></script>
+        <script src="/js/routes/routes.client.js"></script>
+        <script src="/js/services/apiservices.js"></script>
+        <script src="/js/controllers/maincntrl.js"></script>
+        <script src="/bower_components/angular-utils-pagination/dirPagination.js"></script>           
     </head>
 
     <body>
@@ -61,13 +64,13 @@
         
                 </ul>
 
-                <div class="navbar-right hidden-xs" ng-show="!user.loggedIn">
+                <div class="navbar-right hidden-xs" ng-show="!loggedIn">
                   <a ui-sref="register" class="btn btn-primary">Register</a>
                   <a ui-sref="login" class="btn btn-primary">Login</a>
                 </div>
 
-                <div class="navbar-right hidden-xs" ng-show="user.loggedIn">
-                  <b class="btn btn-primary">{{user.username}}</b>
+                <div class="navbar-right hidden-xs" ng-show="loggedIn">
+                  <b class="btn btn-primary">Welcome {{username}}!</b>
                   <button ng-click="logoutUser()" class="btn btn-primary">Logout</button>                  
                 </div>
               </div>
@@ -90,8 +93,8 @@
           </div>
         </div>
         
-        <script src="public/js/vendor/jquery.min.js"></script>
-        <script src="public/js/vendor/bootstrap.min.js"></script>
+        <script src="/js/vendor/jquery.min.js"></script>
+        <script src="/js/vendor/bootstrap.min.js"></script>
         
       </body>
 </html>

@@ -1,4 +1,4 @@
-myApp.factory('ApiServ', function(){
+myApp.factory('ApiServ', function($http){
   var apiFactory = {};
 
   apiFactory.signUp = function(user){
@@ -25,9 +25,15 @@ myApp.factory('ApiServ', function(){
 
   }
 
-  apiFactory.getTricks = function(){
+  apiFactory.getAllTricks = function(){
 
     return $http.get("/api/tricks");
+
+  }
+
+  apiFactory.getTrick = function(id){
+
+    return $http.get("/api/trick/" + id);
 
   }
 
@@ -37,9 +43,9 @@ myApp.factory('ApiServ', function(){
 
   }
 
-  apiFactory.getByCategory = function(id){
+  apiFactory.getTricksByCategory = function(id){
 
-    return $http.get("/api/categories" + id);
+    return $http.get("/api/categories/" + id);
 
   }
 
