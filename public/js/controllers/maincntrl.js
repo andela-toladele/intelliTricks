@@ -202,7 +202,7 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
   document.getElementById("categories").setAttribute("class","");
 
   var isCategory;
-
+  
   if(!$stateParams.by && !$stateParams.id){
     document.getElementById("recent").setAttribute("class","active");
 
@@ -221,7 +221,7 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
       case "discussed":
 
         document.getElementById("discussed").setAttribute("class","active");
-        $scope.pageTitle = "Most Discussed tricks";
+        $scope.pageTitle = "Most discussed tricks";
         $scope.orderCrit = "comments.length";
 
         break;
@@ -246,8 +246,12 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
         console.log($stateParams);
 
         ApiServ.getTricksByCategory($stateParams.id).success(function(data){
-          $scope.tricks = data;   
-        });
+          $scope.tricks = data;
+          $scope.apiCallReturned = true; 
+        })
+        .error(function(err){
+          $scope.apiCallReturned = true;
+        });;
 
         $scope.pageTitle = $stateParams.name;
         break;
@@ -258,7 +262,11 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
   if (!isCategory){
     ApiServ.getAllTricks().success(function(data){
-      $scope.tricks = data;      
+      $scope.tricks = data;
+      $scope.apiCallReturned = true;     
+    })
+    .error(function(err){
+      $scope.apiCallReturned = true;
     });
   }
   
@@ -272,7 +280,8 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
   ApiServ.getCategories().success(function(data){
     console.log(data);
-    $scope.categories = data;      
+    $scope.categories = data;
+    $scope.apiCallReturned = true;    
   });
 
 }]);
