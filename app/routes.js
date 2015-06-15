@@ -41,7 +41,6 @@ module.exports = function(router,passport) {
           return res.send(401,{ success : false, message : 'Same username or email found!' });
         }else{
 
-          user.loggedIn = true;
           req.login(user, function(err){
             if(err){
               return next(err);
@@ -106,7 +105,6 @@ module.exports = function(router,passport) {
           return res.send(401, 'Authentication failed!');
         }else{
           console.log(123);
-          user.loggedIn = true;
           req.login(user, function(err){
             if(err){
               return next(err);
@@ -214,9 +212,9 @@ module.exports = function(router,passport) {
       post.title = req.body.title;
       post.text = req.body.text;
       post.description = req.body.description;
-      post.category.id = req.body.category.id;
-      post.category.name = req.body.category.name;
-      post.tag = req.body.tag;
+      post.category.id = req.body.categoryId;
+      post.category.name = req.body.categoryName;
+      //post.tag = req.body.tag;
 
       post.save(function(err, postedData) {
         if (err)

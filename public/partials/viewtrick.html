@@ -1,14 +1,21 @@
 <div ui-view> 
-  <div class="container">
+  <div class="container" ng-controller="viewTrickCntrl">
     <div class="row">
-      <div class="col-lg-4 col-lg-push-4 col-md-6 col-md-push-3 col-sm-8 col-sm-push-2">
-        <div class="content-box login-form">
-          <h1 class="page-title">Create New Trick</h1>
-          <div class="editor" ui-ace="{ mode: 'javascript', theme: 'monokai' }" readonly=true ng-model="code"></div>
-
-          
-        </div>
+      <div class="col-lg-9 col-md-8">
+        <div class="content-box">
+          <div class="trick-user">
+            <div class="trick-user-data">
+              <h1 class="page-title">
+                  {{post.title}}
+              </h1>
+              <div>
+                  Submitted by <b>{{post.postedBy}} on </b>{{post.when | date:'MMMM d, y HH:mm:ss Z'}}
+              </div>
+            </div>
+          </div>
+          <pre><code class="php"><span class="comment">{{post.description}}</span><br/>{{post.text}}</code></pre>      
+        </div>          
       </div>
     </div>
-  </div>
+  </div>  
 </div>

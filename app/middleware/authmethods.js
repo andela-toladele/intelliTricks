@@ -4,7 +4,7 @@ var AuthMethods = function(){
 
   this.isLoggedIn = function (req, res, next) {
     
-    if (req.user && req.user.loggedIn){
+    if (req.user){
       
       return next();
     }
@@ -13,8 +13,8 @@ var AuthMethods = function(){
   };
 
   this.isAdmin = function (req, res, next) {
-    console.log(20,req.user);
-    if (req.user && req.user.loggedIn && req.user.userType === 'admin')
+    console.log(20,req.user.username, req.user.userType);
+    if (req.user && req.user.userType === 'admin')
       return next();
 
     res.send(403, 'restricted to Admin');
