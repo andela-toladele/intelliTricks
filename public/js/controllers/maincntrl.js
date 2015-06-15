@@ -197,6 +197,10 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
   document.getElementById("popular").setAttribute("class","");
   document.getElementById("discussed").setAttribute("class","");
 
+  document.getElementById("browse").setAttribute("class","active");
+  document.getElementById("createNew").setAttribute("class","");
+  document.getElementById("categories").setAttribute("class","");
+
   var isCategory;
 
   if(!$stateParams.by && !$stateParams.id){
@@ -260,6 +264,11 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
   
 }])
 .controller('categoriesCntrl', ['$scope', 'ApiServ', function($scope, ApiServ) {
+
+  document.getElementById("browse").setAttribute("class","");
+  document.getElementById("createNew").setAttribute("class","");
+  document.getElementById("categories").setAttribute("class","active");
+
 
   ApiServ.getCategories().success(function(data){
     console.log(data);
