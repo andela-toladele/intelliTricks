@@ -21,9 +21,9 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
       
       $rootScope.loggedIn = $scope.loggedIn = false;
-      $rootScope.username = $scope.username = "";
-      $rootScope.userId = $scope.userId = "";
-      $rootScope.userType = $scope.userType = ""; 
+      $rootScope.username = $scope.username = null;
+      $rootScope.userId = $scope.userId = null;
+      $rootScope.userType = $scope.userType = null; 
 
 
     });
@@ -174,10 +174,34 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
 
 }])
-.controller('viewTrickCntrl', ['$scope', '$state', '$stateParams', 'ApiServ', function($scope, $state, $stateParams, ApiServ) {
+.controller('viewTrickCntrl', ['$rootScope', '$scope', '$state', '$stateParams', 'ApiServ', function($rootScope, $scope, $state, $stateParams, ApiServ) {
 
   var postId = $stateParams.id;
   console.log(postId);
+
+  $scope.likeTrick = function(){
+    console.log(1);
+    if($rootScope.loggedIn && $scope.post){
+
+      ApiServ.likeTrick(postId).success(function(data){
+        console.log(data);
+        $scope.post= data;
+      });
+    }
+  }
+
+  $scope.canLike = function(){
+
+    if(!$scope.post || !$rootScope.loggedIn)
+      return false;
+    
+    for(var i=0; i<$scope.post.likes.length; i++){
+      if($scope.post.likes[i].username === $rootScope.username){
+        return false;
+      }
+    }
+    return true;
+  }
 
   ApiServ.getTrick(postId).success(function(data){
 
@@ -188,8 +212,6 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
        $state.go("home");
 
     });
-
-
 
 }])
 .controller('tricksCntrl', ['$scope', '$state', '$stateParams', 'ApiServ', function($scope, $state, $stateParams, ApiServ) {
@@ -269,7 +291,8 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
       $scope.apiCallReturned = true;
     });
   }
-  
+
+
 }])
 .controller('categoriesCntrl', ['$scope', 'ApiServ', function($scope, ApiServ) {
 

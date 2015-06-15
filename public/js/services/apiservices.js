@@ -61,6 +61,11 @@ myApp.factory('ApiServ', function($http){
 
   }
 
+  apiFactory.likeTrick = function(postId){
+
+    return $http.post("/api/tricks/like/" + postId);
+
+  }
 
   return apiFactory;
 

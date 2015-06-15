@@ -16,6 +16,39 @@
           <pre><code class="php"><span class="comment">{{post.description}}</span><br/>{{post.text}}</code></pre>      
         </div>          
       </div>
+
+
+      <div class="col-lg-3 col-md-4">
+                
+        <p class="text-muted text-center">Place your ads...</p>
+
+        <div class="content-box">
+          <b>Stats</b>
+          <ul class="list-group trick-stats">
+            <a href="" ng-click="!canLike() || likeTrick()" class="list-group-item js-like-trick" data-liked="0">
+              <span class="fa fa-heart"></span>
+                <span class="js-like-status" ng-show="canLike()">
+                  Like Trick
+                </span>
+              <span class="pull-right js-like-count">
+                {{post.likes.length}}
+              </span>
+            </a>
+            <li class="list-group-item">
+              <span class="fa fa-eye"></span> {{post.viewed}}
+            </li>
+          </ul>
+          <b>Categories</b>
+          <ul class="nav nav-list push-down">
+            <li>
+              <a ui-sref="category({id: post.category.id, name: post.category.name})">{{post.category.name}}</a>
+            </li>
+          </ul>    
+        </div>
+      </div>
+
+
+
     </div>
   </div>  
 </div>

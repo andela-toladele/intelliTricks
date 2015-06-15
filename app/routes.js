@@ -244,6 +244,27 @@ module.exports = function(router,passport) {
       
     });
 
+
+    router.route('/tricks/like/:post_id')
+
+    // post comment by a logged in user
+    .post(AuthMethods.isLoggedIn, function(req, res) {
+      
+      Post.findByIdAndUpdate(
+       req.params.post_id,
+       { $push: {"likes": {username: req.user.username}}},
+       {  safe: true, upsert: true, new: true},
+         function(err, model) {
+          if(err){
+            return res.send(err);
+          }
+            console.log(model);
+            return res.json(model);
+        });
+      
+    });
+
+
     router.route('/categories/create')
   
       // Get all the categories
