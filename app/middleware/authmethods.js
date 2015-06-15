@@ -13,7 +13,7 @@ var AuthMethods = function(){
   };
 
   this.isAdmin = function (req, res, next) {
-    console.log(20,req.user.username, req.user.userType);
+    
     if (req.user && req.user.userType === 'admin')
       return next();
 
