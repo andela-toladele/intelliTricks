@@ -162,11 +162,11 @@ module.exports = function(router,passport) {
 
     });
 
-    router.route('/categories/:category_name')
+    router.route('/categories/:category_id')
   
       // Get all tricks posted for a category
       .get(function(req, res) {
-        Post.find({category: req.params.category_name}, function(err, posts) {
+        Post.find({'category.id': req.params.category_id}, function(err, posts) {
           if (err)
             res.send(err);
 

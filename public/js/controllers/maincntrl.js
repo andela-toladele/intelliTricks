@@ -192,11 +192,79 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
 
 }])
-.controller('homeCntrl', ['$rootScope', '$scope', '$state', 'ApiServ', function($rootScope, $scope, $state, ApiServ) {
-  document.getElementById("browse").setAttribute("class","active");
-  document.getElementById("createNew").setAttribute("class","");
-  document.getElementById("categories").setAttribute("class","");
+.controller('tricksCntrl', ['$scope', '$state', '$stateParams', 'ApiServ', function($scope, $state, $stateParams, ApiServ) {
+  document.getElementById("recent").setAttribute("class","");
+  document.getElementById("popular").setAttribute("class","");
+  document.getElementById("discussed").setAttribute("class","");
 
+  var isCategory;
+
+  if(!$stateParams.by && !$stateParams.id){
+    document.getElementById("recent").setAttribute("class","active");
+
+    $scope.pageTitle = "Recent tricks";
+
+    $scope.orderCrit = function(post) {
+      var date = new Date(post.when);
+      return date;
+    };
+    
+  }else{
+
+    var section = $stateParams.by;
+
+    switch(section){
+      case "discussed":
+
+        document.getElementById("discussed").setAttribute("class","active");
+        $scope.pageTitle = "Most Discussed tricks";
+        $scope.orderCrit = "comments.length";
+
+        break;
+      case "popular":
+        document.getElementById("popular").setAttribute("class","active");
+        $scope.pageTitle = "Most popular tricks";
+        $scope.orderCrit = "viewed";
+
+        break;
+
+      default: //when viewing trick for a category
+
+        document.getElementById("recent").setAttribute("class","active");
+
+        isCategory = true;
+        
+        $scope.orderCrit = function(post) {
+          var date = new Date(post.when);
+          return date;
+        };
+
+        console.log($stateParams);
+
+        ApiServ.getTricksByCategory($stateParams.id).success(function(data){
+          $scope.tricks = data;   
+        });
+
+        $scope.pageTitle = $stateParams.name;
+        break;
+
+    }
+
+  }
+
+  if (!isCategory){
+    ApiServ.getAllTricks().success(function(data){
+      $scope.tricks = data;      
+    });
+  }
+  
+}])
+.controller('categoriesCntrl', ['$scope', 'ApiServ', function($scope, ApiServ) {
+
+  ApiServ.getCategories().success(function(data){
+    console.log(data);
+    $scope.categories = data;      
+  });
 
 }]);
 

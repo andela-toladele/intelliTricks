@@ -8,6 +8,6 @@ myApp.directive('trickItem', function(){
     scope: {
       trickobject: '='      
     },
-    templateUrl: 'public/directives/trick.html'
+    templateUrl: '/directives/trick.html'
   }
 });
