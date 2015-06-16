@@ -18,7 +18,7 @@ var PostSchema   = new Schema({
     comments:[{
       text: String,
       commentBy: String,
-      commentDate: {type: Date, default: Date.now()},
+      when: {type: Date, default: Date.now()},     
       likes: [{
       username: String,
       when: {type: Date, default: Date.now()}           

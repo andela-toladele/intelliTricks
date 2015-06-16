@@ -1,5 +1,13 @@
 myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function($rootScope, $scope, ApiServ) {
 
+  ApiServ.getUser().success(function(data){    
+
+    $rootScope.loggedIn = $scope.loggedIn = true;
+    $rootScope.username = $scope.username = data.username;
+    $rootScope.userId = $scope.userId = data._id;
+    $rootScope.userType = $scope.userType = data.userType;
+
+  });
 
   $scope.$watch(function() {
     return $rootScope.loggedIn;
@@ -17,14 +25,10 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
   $scope.logoutUser = function(){
     ApiServ.logout().success(function(data){
 
-      console.log(data);
-
-      
       $rootScope.loggedIn = $scope.loggedIn = false;
       $rootScope.username = $scope.username = null;
       $rootScope.userId = $scope.userId = null;
-      $rootScope.userType = $scope.userType = null; 
-
+      $rootScope.userType = $scope.userType = null;
 
     });
 
@@ -194,7 +198,7 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
     if(!$scope.post || !$rootScope.loggedIn)
       return false;
-    
+      
     for(var i=0; i<$scope.post.likes.length; i++){
       if($scope.post.likes[i].username === $rootScope.username){
         return false;
@@ -213,59 +217,78 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
     });
 
+
+  $scope.postComment = function(){
+    $scope.errorMessage = "";
+    $scope.invalidPost = false;
+
+    console.log($scope.comment);
+
+    if(!$scope.comment){
+
+      $scope.invalidPost = true;
+
+      $scope.errorMessage = "Do not leave Comment field blank";
+
+      return;
+
+    }
+
+
+    
+
+    ApiServ.postComment($scope.post._id, {text: $scope.comment})
+    .success(function(data){
+
+      console.log(data);
+
+      $scope.post = data;
+      $scope.comment = null;
+
+    })
+    .error(function(err, status){
+      $scope.invalidPost = true;
+      if(status == 401){
+        $scope.errorMessage = "Please login to post comment";
+      }else{
+        $scope.errorMessage = "An error occured, please try again!";
+      }
+    });
+  }  
+
 }])
 .controller('tricksCntrl', ['$scope', '$state', '$stateParams', 'ApiServ', function($scope, $state, $stateParams, ApiServ) {
-  document.getElementById("recent").setAttribute("class","");
+  document.getElementById("recent").setAttribute("class","active");
   document.getElementById("popular").setAttribute("class","");
   document.getElementById("discussed").setAttribute("class","");
 
-  document.getElementById("browse").setAttribute("class","active");
+  document.getElementById("browse").setAttribute("class","");
   document.getElementById("createNew").setAttribute("class","");
   document.getElementById("categories").setAttribute("class","");
 
-  var isCategory;
+ $scope.orderCrit = function(post) {
+    var date = new Date(post.when);
+    return date;
+  };
+
+
   
-  if(!$stateParams.by && !$stateParams.id){
-    document.getElementById("recent").setAttribute("class","active");
+  if(!$stateParams.id){
+    document.getElementById("browse").setAttribute("class","active");
 
     $scope.pageTitle = "Recent tricks";
 
-    $scope.orderCrit = function(post) {
-      var date = new Date(post.when);
-      return date;
-    };
+    ApiServ.getAllTricks().success(function(data){
+      $scope.tricks = data;
+      $scope.apiCallReturned = true;     
+    })
+    .error(function(err){
+      $scope.apiCallReturned = true;
+    });
     
-  }else{
+    }else{
 
-    var section = $stateParams.by;
-
-    switch(section){
-      case "discussed":
-
-        document.getElementById("discussed").setAttribute("class","active");
-        $scope.pageTitle = "Most discussed tricks";
-        $scope.orderCrit = "comments.length";
-
-        break;
-      case "popular":
-        document.getElementById("popular").setAttribute("class","active");
-        $scope.pageTitle = "Most popular tricks";
-        $scope.orderCrit = "viewed";
-
-        break;
-
-      default: //when viewing trick for a category
-
-        document.getElementById("recent").setAttribute("class","active");
-
-        isCategory = true;
-        
-        $scope.orderCrit = function(post) {
-          var date = new Date(post.when);
-          return date;
-        };
-
-        console.log($stateParams);
+        document.getElementById("categories").setAttribute("class","active");
 
         ApiServ.getTricksByCategory($stateParams.id).success(function(data){
           $scope.tricks = data;
@@ -276,23 +299,44 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
         });;
 
         $scope.pageTitle = $stateParams.name;
-        break;
-
     }
 
-  }
+    $scope.updateOrderCrit = function(option){
 
-  if (!isCategory){
-    ApiServ.getAllTricks().success(function(data){
-      $scope.tricks = data;
-      $scope.apiCallReturned = true;     
-    })
-    .error(function(err){
-      $scope.apiCallReturned = true;
-    });
-  }
+      document.getElementById("recent").setAttribute("class","");
+      document.getElementById("popular").setAttribute("class","");
+      document.getElementById("discussed").setAttribute("class","");
 
+      switch(option){
 
+        case 2:
+
+        document.getElementById("discussed").setAttribute("class","active");
+        $scope.pageTitle = "Most discussed tricks";
+        $scope.orderCrit = "comments.length";
+
+        break;
+      case 1:
+        document.getElementById("popular").setAttribute("class","active");
+        $scope.pageTitle = "Most popular tricks";
+        $scope.orderCrit = "viewed";
+
+        break;
+
+      case 0: 
+
+        document.getElementById("recent").setAttribute("class","active");
+
+        $scope.pageTitle = "Recent tricks";
+
+        $scope.orderCrit = function(post) {
+          var date = new Date(post.when);
+          return date;
+        };
+
+        break;
+      }
+    }
 }])
 .controller('categoriesCntrl', ['$scope', 'ApiServ', function($scope, ApiServ) {
 

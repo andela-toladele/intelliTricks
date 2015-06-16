@@ -5,7 +5,7 @@
         <h1 class="page-title">{{pageTitle}}</h1>
       
         <ul class="nav nav-pills">
-            <li id="recent"><a ui-sref="home">Most recent</a></li><li id="popular"><a ui-sref="viewtricks({by: 'popular'})">Most popular</a></li><li id="discussed"><a ui-sref="viewtricks({by: 'discussed'})">Most discussed</a></li>
+            <li id="recent"><a href="" ng-click="updateOrderCrit(0)">Most recent</a></li><li id="popular"><a href="" ng-click="updateOrderCrit(1)">Most popular</a></li><li id="discussed"><a href="" ng-click="updateOrderCrit(2)">Most discussed</a></li>
         </ul>
       </div>
       <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
@@ -20,20 +20,20 @@
     <div class="row js-trick-container">
       
       <div dir-paginate="trick in filteredTricks = (tricks|filter:searchText|orderBy:orderCrit:true) | itemsPerPage : 9">      
-        <trick-Item trickobject="trick"></trick-Item>           
+        <trick-Item trickobject="trick"></trick-Item>         
       </div>
 
       <div class="col-lg-12" ng-show="!filteredTricks.length && apiCallReturned">
         <div class="alert alert-danger">
           Sorry, no tricks for you!
         </div>
-      </div>    
+      </div>      
 
-    <div class="col-md-12 text-center">
-      <dir-pagination-controls boundary-links="true" template-url="bower_components/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
 
-  </div>
+    <div class="col-md-12 text-center">
+        <dir-pagination-controls boundary-links="true" template-url="/bower_components/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
+    </div>
 
   <script src="public/js/vendor/masonry.pkgd.min.js"></script>
   <script>

@@ -25,10 +25,6 @@ myApp.config(function($stateProvider, $urlRouterProvider){
       templateUrl: '/partials/signup.html',
       controller: 'registerCntrl'
     }).
-    state('viewtricks',{
-      url: '/viewtricks?by',
-      templateUrl: '/partials/tricks.html'
-    }).
     state('tricks',{
       url: '/tricks?id',
       templateUrl: '/partials/viewtrick.html'

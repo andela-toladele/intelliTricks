@@ -114,7 +114,18 @@ module.exports = function(router,passport) {
         }
       }
     )(req, res, next);
-  }); 
+  });
+
+  router.route('/user')
+  
+    // Get all tricks posted
+    .get(function(req, res) {
+      if(req.user)
+        return res.json(req.user);
+
+      return res.send(401,{ success : false, message : 'No user in session!'});
+
+    });
 
   router.route('/tricks')
   
@@ -225,7 +236,7 @@ module.exports = function(router,passport) {
       });
     });
 
-    router.route('/tricks/comments/:post_id')
+    router.route('/tricks/comment/:post_id')
 
     // post comment by a logged in user
     .post(AuthMethods.isLoggedIn, function(req, res) {
@@ -233,13 +244,13 @@ module.exports = function(router,passport) {
       Post.findByIdAndUpdate(
        req.params.post_id,
        { $push: {"comments": {text: req.body.text, commentBy: req.body.commentBy}}},
-       {  safe: true, upsert: true},
+       {  safe: true, upsert: true, new: true},
          function(err, model) {
           if(err){
             return res.send(err);
           }
             console.log(model);
-            return res.json({message: 'Comment posted!', data: model});
+            return res.json(model);
         });
       
     });

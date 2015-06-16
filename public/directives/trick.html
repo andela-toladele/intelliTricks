@@ -5,7 +5,7 @@
     </a>
     <div class="trick-card-stats trick-card-by">by <b>{{trickobject.postedBy}}</b></div>
     <div class="trick-card-stats clearfix">
-      <div class="trick-card-timeago">Submitted on  {{trickobject.when | date:'MMMM d, y'}} <a ui-sref="category({id: trickobject.category.id, name: trickobject.category.name})">{{trickobject.category.name}}</a>
+      <div class="trick-card-timeago">Submitted <span am-time-ago="trickobject.when"></span> <a ui-sref="category({id: trickobject.category.id, name: trickobject.category.name})">{{trickobject.category.name}}</a>
       </div>
       <div class="trick-card-stat-block"><span class="fa fa-eye"></span>{{trickobject.viewed}}</div>
       <div class="trick-card-stat-block text-center"><span class="fa fa-comment"></span>{{trickobject.comments.length}}</div>

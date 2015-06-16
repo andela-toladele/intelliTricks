@@ -1,6 +1,12 @@
 myApp.factory('ApiServ', function($http){
   var apiFactory = {};
 
+  apiFactory.getUser = function(){
+
+    return $http.get("/api/user");
+
+  }
+
   apiFactory.signUp = function(user){
 
     return $http.post("/api/signup", user);
@@ -57,7 +63,7 @@ myApp.factory('ApiServ', function($http){
 
   apiFactory.postComment = function(postId, trick){
 
-    return $http.post("/api/tricks/comments/" + postId, trick);
+    return $http.post("/api/tricks/comment/" + postId, trick);
 
   }
 
