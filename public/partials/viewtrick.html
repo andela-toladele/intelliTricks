@@ -35,7 +35,7 @@
           </form>
         </div>
 
-        <div dir-paginate="comment in post.comments | itemsPerPage : 15">  
+        <div dir-paginate="comment in post.comments | orderBy:orderCrit:true | itemsPerPage : 15">  
           <div class="post-body" style="margin: 4px 0">
             <header>
               <span class="post-byline">
@@ -60,7 +60,7 @@
             </div>
          
             <li style="width: 6em">
-              <a href="" class="list-group-item js-like-trick" style="padding: 4px">
+              <a href="" class="list-group-item js-like-trick" style="padding: 6px; border:none;">
                 <span class="fa fa-heart"></span>
                 <span class="js-like-status" ng-show="true">
                   Like

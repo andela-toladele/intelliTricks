@@ -234,9 +234,6 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
     }
 
-
-    
-
     ApiServ.postComment($scope.post._id, {text: $scope.comment})
     .success(function(data){
 
@@ -254,7 +251,12 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
         $scope.errorMessage = "An error occured, please try again!";
       }
     });
-  }  
+  }
+
+  $scope.orderCrit = function(post) {
+    var date = new Date(post.when);
+    return date;
+  };
 
 }])
 .controller('tricksCntrl', ['$scope', '$state', '$stateParams', 'ApiServ', function($scope, $state, $stateParams, ApiServ) {
@@ -312,13 +314,19 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
         case 2:
 
         document.getElementById("discussed").setAttribute("class","active");
-        $scope.pageTitle = "Most discussed tricks";
+
+        if(!$stateParams.id)
+          $scope.pageTitle = "Most discussed tricks";
+
         $scope.orderCrit = "comments.length";
 
         break;
       case 1:
         document.getElementById("popular").setAttribute("class","active");
-        $scope.pageTitle = "Most popular tricks";
+
+        if(!$stateParams.id)
+          $scope.pageTitle = "Most popular tricks";
+
         $scope.orderCrit = "viewed";
 
         break;
@@ -327,7 +335,8 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
         document.getElementById("recent").setAttribute("class","active");
 
-        $scope.pageTitle = "Recent tricks";
+        if(!$stateParams.id)
+          $scope.pageTitle = "Recent tricks";
 
         $scope.orderCrit = function(post) {
           var date = new Date(post.when);
