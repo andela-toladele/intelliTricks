@@ -32,7 +32,7 @@
 
           </div>
 
-          <div ng-show="postEditMode">
+          <div style="display: {{editPostStyle}}">
             <div class="editor" ui-ace="{ mode: 'javascript', theme: 'monokai' }" ng-model="post.text" style="margin-bottom: 5px"></div>
 
 

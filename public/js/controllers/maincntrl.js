@@ -182,6 +182,8 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
   $scope.postId = $stateParams.id;
   $scope.editMode = false;
+  $scope.editPostStyle = "none";
+
   console.log($scope.postId);
 
   $scope.likeTrick = function(){
@@ -262,11 +264,15 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
   $scope.showEditFields = function(){
     $scope.postEditMode = true;
     $scope.tempPost = angular.copy($scope.post.text);
+    //some awkward codes because of ui-ace editor not working properly with ng-show
+    $scope.editPostStyle = "block";
+    
   }
 
   $scope.cancelEditTrick = function(){
     $scope.postEditMode = false;
     $scope.post.text = angular.copy($scope.tempPost);
+    $scope.editPostStyle = "none";
   }
 
   $scope.updateTrick = function(){
@@ -290,6 +296,7 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
       console.log(data);
 
       $scope.postEditMode = false;
+      $scope.editPostStyle = "none";
       $scope.post = data;
 
     })
