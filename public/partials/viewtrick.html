@@ -1,0 +1,115 @@
+<div ui-view> 
+  <div class="container" ng-controller="viewTrickCntrl">
+    <div class="row">
+      <div class="col-lg-9 col-md-8">
+      
+        <div class="content-box">
+          <div class="trick-user">
+            <div class="trick-user-data">
+              <h1 class="page-title">
+                  {{post.title}}
+              </h1>
+              <div>
+                  Submitted by <b>{{post.postedBy}}</b> <span am-time-ago="post.when"></span>
+              </div>
+            </div>
+          </div>
+          <p>{{post.description}}</p>
+          <div hljs no-escape source="post.text"></div>          
+        </div>
+
+
+
+        <div id="messages-input-container" class="content-box">
+          <form id="message-form">                
+            <textarea autocorrect="off" autocomplete="off" spellcheck="true" style="overflow-y: hidden; height: 60px;" placeholder="Type your comment..." ng-model="comment"></textarea>
+
+            <div ng-show="invalidPost" style="color: red;">{{errorMessage}}</div>
+            <div class="form-group">
+              <div class="text-right">
+                <button id="save-section" ng-click="postComment()" class="btn btn-primary ladda-button" data-style="expand-right">
+                  Post comment
+                </button>
+              </div>
+            </div>    
+          </form>
+        </div>
+
+        <div dir-paginate="comment in post.comments | orderBy:orderCrit:true | itemsPerPage : 15">  
+          <div class="post-body" style="margin: 1.5em 0">
+            <header>
+              <span class="post-byline">
+                <span class="author publisher-anchor-color"><b style="color: #288ce4">{{comment.commentBy}}</b></span>
+
+              </span>
+
+              <span class="post-meta">
+                <span class="time-ago" am-time-ago="comment.when"></span>
+              </span>
+
+            </header>
+
+            <div class="post-body-inner">
+              <div class="post-message-container">
+                <div class="publisher-anchor-color">
+                  <div class="post-message" dir="auto">
+                    <p style="text-align: justify; margin-left: 1em;">{{comment.text}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+         
+            <li style="width: 6em" margin-top:"1.5em">
+              <a href="" class="list-group-item js-like-trick" style="padding:0; border:none;">
+                <span class="fa fa-heart"></span>
+                <span class="js-like-status" ng-show="true">
+                  Like
+                </span>
+                <span class="pull-right js-like-count">
+                  {{comment.likes.length}}
+                </span>
+              </a>
+            </li>
+          </div>
+        </div>
+
+
+        <div class="col-md-12 text-center">
+          <dir-pagination-controls boundary-links="true" template-url="/bower_components/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
+        </div>
+
+      </div>
+
+
+      <div class="col-lg-3 col-md-4">
+                
+        <p class="text-muted text-center">Place your ads...</p>
+
+        <div class="content-box">
+          <b>Stats</b>
+          <ul class="list-group trick-stats">
+            <a href="" ng-click="!canLike() || likeTrick()" class="list-group-item js-like-trick" data-liked="0">
+              <span class="fa fa-heart"></span>
+                <span class="js-like-status" ng-show="canLike()">
+                  Like Trick
+                </span>
+              <span class="pull-right js-like-count">
+                {{post.likes.length}}
+              </span>
+            </a>
+            <li class="list-group-item">
+              <span class="fa fa-eye"></span> {{post.viewed}}
+            </li>
+          </ul>
+          <b>Categories</b>
+          <ul class="nav nav-list push-down">
+            <li>
+              <a ui-sref="category({id: post.category.id, name: post.category.name})">{{post.category.name}}</a>
+            </li>
+          </ul>    
+        </div>
+      </div>
+    </div>
+
+  </div>  
+</div>
