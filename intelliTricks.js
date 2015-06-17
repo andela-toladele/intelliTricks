@@ -19,7 +19,6 @@ mongoose.connect(database.url);
 
 require('./app/dbconfig/passport')(passport);
 
-
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
