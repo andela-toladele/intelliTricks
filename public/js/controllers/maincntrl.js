@@ -325,6 +325,7 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
         document.getElementById("popular").setAttribute("class","active");
 
         if(!$stateParams.id)
+          
           $scope.pageTitle = "Most popular tricks";
 
         $scope.orderCrit = "viewed";
