@@ -43,6 +43,12 @@ myApp.factory('ApiServ', function($http){
 
   }
 
+  apiFactory.updateTrick = function(id, text){
+
+    return $http.put("/api/trick/" + id, text);
+
+  }
+
   apiFactory.getCategories = function(){
 
     return $http.get("/api/categories");

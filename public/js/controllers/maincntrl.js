@@ -180,14 +180,15 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 }])
 .controller('viewTrickCntrl', ['$rootScope', '$scope', '$state', '$stateParams', 'ApiServ', function($rootScope, $scope, $state, $stateParams, ApiServ) {
 
-  var postId = $stateParams.id;
-  console.log(postId);
+  $scope.postId = $stateParams.id;
+  $scope.editMode = false;
+  console.log($scope.postId);
 
   $scope.likeTrick = function(){
     console.log(1);
     if($rootScope.loggedIn && $scope.post){
 
-      ApiServ.likeTrick(postId).success(function(data){
+      ApiServ.likeTrick($scope.postId).success(function(data){
         console.log(data);
         $scope.post= data;
       });
@@ -207,7 +208,7 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
     return true;
   }
 
-  ApiServ.getTrick(postId).success(function(data){
+  ApiServ.getTrick($scope.postId).success(function(data){
 
       console.log(data);
       $scope.post = data;     
@@ -219,16 +220,16 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
 
   $scope.postComment = function(){
-    $scope.errorMessage = "";
-    $scope.invalidPost = false;
+    $scope.commentErrorMessage = "";
+    $scope.invalidComment = false;
 
     console.log($scope.comment);
 
     if(!$scope.comment){
 
-      $scope.invalidPost = true;
+      $scope.invalidComment = true;
 
-      $scope.errorMessage = "Do not leave Comment field blank";
+      $scope.commentErrorMessage = "Do not leave Comment field blank";
 
       return;
 
@@ -244,11 +245,11 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
     })
     .error(function(err, status){
-      $scope.invalidPost = true;
+      $scope.invalidComment = true;
       if(status == 401){
-        $scope.errorMessage = "Please login to post comment";
+        $scope.commentErrorMessage = "Please login to post comment";
       }else{
-        $scope.errorMessage = "An error occured, please try again!";
+        $scope.commentErrorMessage = "An error occured, please try again!";
       }
     });
   }
@@ -257,6 +258,62 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
     var date = new Date(post.when);
     return date;
   };
+
+  $scope.showEditFields = function(){
+    $scope.postEditMode = true;
+    $scope.tempPost = angular.copy($scope.post.text);
+  }
+
+  $scope.cancelEditTrick = function(){
+    $scope.postEditMode = false;
+    $scope.post.text = angular.copy($scope.tempPost);
+  }
+
+  $scope.updateTrick = function(){
+
+    $scope.postErrorMessage = "";
+    $scope.invalidPost = false;
+
+    if(!$scope.post.text){
+
+      $scope.invalidPost = true;
+
+      $scope.postErrorMessage = "Do not leave post field blank";
+
+      return;
+
+    }
+
+    ApiServ.updateTrick($scope.postId, {text: $scope.post.text})
+    .success(function(data){
+
+      console.log(data);
+
+      $scope.postEditMode = false;
+      $scope.post = data;
+
+    })
+    .error(function(err, status){
+      $scope.invalidPost = true;
+      if(status == 401){
+        $scope.errorMessage = "Please login to as trick author to edit";
+      }else{
+        $scope.errorMessage = "An error occured, please try again!";
+      }
+    });
+  }
+
+  $scope.canEditPost = function(){
+
+    if(!$scope.post)
+      return false;
+
+    if($rootScope.loggedIn && (($rootScope.username === $scope.post.postedBy) || $rootScope.userType === "admin"))
+      return true;
+
+    return false;
+
+  }
 
 }])
 .controller('tricksCntrl', ['$scope', '$state', '$stateParams', 'ApiServ', function($scope, $state, $stateParams, ApiServ) {

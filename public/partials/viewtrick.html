@@ -15,16 +15,48 @@
             </div>
           </div>
           <p>{{post.description}}</p>
-          <div hljs no-escape source="post.text"></div>          
+
+          <div ng-show="!postEditMode">
+            <div hljs no-escape source="post.text"></div>
+
+
+
+            <div class="form-group" ng-show="!postEditMode && canEditPost()">
+              <div class="text-right">
+
+                <button type="submit" id="save-section" ng-click="showEditFields()" class="btn btn-primary ladda-button" data-style="expand-right">
+                  Edit Trick
+                </button>                
+              </div>
+            </div>
+
+          </div>
+
+          <div ng-show="postEditMode">
+            <div class="editor" ui-ace="{ mode: 'javascript', theme: 'monokai' }" ng-model="post.text" style="margin-bottom: 5px"></div>
+
+
+            <div ng-show="invalidPost" style="color: red;">{{postErrorMessage}}</div>
+            <div class="form-group">
+              <div class="text-right">
+
+                <button type="submit" id="save-section" ng-click="cancelEditTrick()" class="btn btn-primary ladda-button" data-style="expand-right">
+                  Cancel Edit
+                </button>
+                <button type="submit" id="save-section" ng-click="updateTrick()" class="btn btn-primary ladda-button" data-style="expand-right">
+                  Save Trick
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
-
-
 
         <div id="messages-input-container" class="content-box">
           <form id="message-form">                
             <textarea autocorrect="off" autocomplete="off" spellcheck="true" style="overflow-y: hidden; height: 60px;" placeholder="Type your comment..." ng-model="comment"></textarea>
 
-            <div ng-show="invalidPost" style="color: red;">{{errorMessage}}</div>
+            <div ng-show="invalidComment" style="color: red;">{{commentErrorMessage}}</div>
             <div class="form-group">
               <div class="text-right">
                 <button id="save-section" ng-click="postComment()" class="btn btn-primary ladda-button" data-style="expand-right">
@@ -35,16 +67,16 @@
           </form>
         </div>
 
-        <div dir-paginate="comment in post.comments | orderBy:orderCrit:true | itemsPerPage : 15">  
+        <div dir-paginate="commentItem in post.comments | orderBy:orderCrit:true | itemsPerPage : 15">  
           <div class="post-body" style="margin: 1.5em 0">
             <header>
               <span class="post-byline">
-                <span class="author publisher-anchor-color"><b style="color: #288ce4">{{comment.commentBy}}</b></span>
+                <span class="author publisher-anchor-color"><b style="color: #288ce4">{{commentItem.commentBy}}</b></span>
 
               </span>
 
               <span class="post-meta">
-                <span class="time-ago" am-time-ago="comment.when"></span>
+                <span class="time-ago" am-time-ago="commentItem.when"></span>
               </span>
 
             </header>
@@ -53,7 +85,7 @@
               <div class="post-message-container">
                 <div class="publisher-anchor-color">
                   <div class="post-message" dir="auto">
-                    <p style="text-align: justify; margin-left: 1em;">{{comment.text}}</p>
+                    <p style="text-align: justify; margin-left: 1em;">{{commentItem.text}}</p>
                   </div>
                 </div>
               </div>
@@ -66,7 +98,7 @@
                   Like
                 </span>
                 <span class="pull-right js-like-count">
-                  {{comment.likes.length}}
+                  {{commentItem.likes.length}}
                 </span>
               </a>
             </li>

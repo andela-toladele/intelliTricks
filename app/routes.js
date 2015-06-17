@@ -136,7 +136,7 @@ module.exports = function(router,passport) {
       Post.find(function(err, posts) {
 
         if (err)
-          res.send(err);
+          return res.send(err);
 
         res.json(posts);
       });
@@ -145,19 +145,42 @@ module.exports = function(router,passport) {
 
     router.route('/trick/:trick_id')
   
-    // Get all tricks posted
-    .get(function(req, res) {
+      // Get a trick
+      .get(function(req, res) {
 
-      // Load all posts
-      Post.findByIdAndUpdate(req.params.trick_id, { $inc: {"viewed" : 1} }, function(err, post) {
+        // Load all posts
+        Post.findByIdAndUpdate(req.params.trick_id, { $inc: {"viewed" : 1} }, function(err, post) {
 
-        if (err)
-          res.send(err);
+          if (err)
+            return res.send(err);
 
-        res.json(post);
+          res.json(post);
+        });
+
+      })
+       // Update a trick
+      .put(AuthMethods.isLoggedIn, function(req, res) {
+
+        var text = req.body.text;
+        
+        Post.findById(req.params.trick_id, function(err, post) {
+
+          if (err)
+            return res.send(err);
+
+          if(!req.user || (req.user.username !== post.postedBy && req.user.userType !== "admin"))
+            return res.send(401, 'Please login as post author!');
+
+          post.text = text;
+          post.save(function(err, model) {
+            if(err){
+              return res.send(err);
+            }          
+            res.json(model);
+          });          
+        });
+
       });
-
-    });
 
 
     router.route('/categories')
@@ -166,7 +189,7 @@ module.exports = function(router,passport) {
       .get(function(req, res) {
         Categories.find(function(err, categories) {
           if (err)
-            res.send(err);
+            return res.send(err);
           
           res.json(categories);
         });
@@ -179,7 +202,7 @@ module.exports = function(router,passport) {
       .get(function(req, res) {
         Post.find({'category.id': req.params.category_id}, function(err, posts) {
           if (err)
-            res.send(err);
+            return res.send(err);
 
           res.json(posts);
       });
@@ -192,7 +215,7 @@ module.exports = function(router,passport) {
       .get(function(req, res) {
         Tag.find(function(err, tags) {
           if (err)
-            res.send(err);
+            return res.send(err);
           
           res.json(tags);
         });
@@ -205,7 +228,7 @@ module.exports = function(router,passport) {
       .get(function(req, res) {
         Post.find({tag: req.params.tag_name}, function(err, posts) {
           if (err)
-            res.send(err);
+            return res.send(err);
 
           res.json(posts);
         });
@@ -229,7 +252,7 @@ module.exports = function(router,passport) {
 
       post.save(function(err, postedData) {
         if (err)
-            res.send(err);
+            return res.send(err);
         req.postId = postedData._id;
 
         res.json({ message: 'Post created!', id: postedData._id});
@@ -243,7 +266,7 @@ module.exports = function(router,passport) {
       req.body.commentBy = req.user.username;
       Post.findByIdAndUpdate(
        req.params.post_id,
-       { $push: {"comments": {text: req.body.text, commentBy: req.body.commentBy}}},
+       { $push: {"comments": {text: req.body.text, commentBy: req.body.commentBy, when: Date.now()}}},
        {  safe: true, upsert: true, new: true},
          function(err, model) {
           if(err){
