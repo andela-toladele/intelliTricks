@@ -4,11 +4,17 @@ myApp.controller('viewTrickCntrl', ['$rootScope', '$scope', '$state', '$statePar
   $scope.editMode = false;
   $scope.editPostStyle = "none";
   $scope.contentLoaded = false;
+  $scope.commentCount = 1;
 
   console.log($scope.postId);
 
+  $scope.$watch('commentCount', function(){
+
+    console.log($scope.commentCount);
+  });
+
   $scope.likeTrick = function(){
-    console.log(1);
+    
     if($rootScope.loggedIn && $scope.post){
 
       ApiServ.likeTrick($scope.postId).success(function(data){

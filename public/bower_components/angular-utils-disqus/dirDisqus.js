@@ -63,6 +63,16 @@
                         $window.disqus_disable_mobile = scope.disqus_disable_mobile;
                         $window.disqus_config =  function () {
                             this.language = scope.disqus_config_language;
+
+                            this.callbacks.onNewComment.push(function() {
+                                console.log(scope.disqus_identifier, 20);
+                                scope.commentCount += 1
+
+                                var xmlHttp = new XMLHttpRequest();
+                                xmlHttp.open( "POST", "/api/tricks/disquscomment/" + scope.disqus_identifier, false );
+                                xmlHttp.send( null );
+                                console.log(xmlHttp.responseText);
+                            });
                         };
                         // get the remote Disqus script and insert it into the DOM, but only if it not already loaded (as that will cause warnings)
                         if (!$window.DISQUS) {
@@ -79,7 +89,8 @@
                                     this.language = scope.disqus_config_language;
                                 }
                             });
-                        }
+                        }                       
+
                     }
                 });
             }

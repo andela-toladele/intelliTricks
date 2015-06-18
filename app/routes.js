@@ -259,14 +259,14 @@ module.exports = function(router,passport) {
       });
     });
 
-    router.route('/tricks/comment/:post_id')
+    router.route('/tricks/disquscomment/:post_id')
 
     // post comment by a logged in user
-    .post(AuthMethods.isLoggedIn, function(req, res) {
-      req.body.commentBy = req.user.username;
+    .post(function(req, res) {
+      
       Post.findByIdAndUpdate(
        req.params.post_id,
-       { $push: {"comments": {text: req.body.text, commentBy: req.body.commentBy, when: Date.now()}}},
+       { $push: {"comments": {text: '', commentBy: 'from_disqus', when: Date.now()}}},
        {  safe: true, upsert: true, new: true},
          function(err, model) {
           if(err){
@@ -320,5 +320,29 @@ module.exports = function(router,passport) {
           res.json({ message: 'Category created!', data: model});
         });
     });
+
+    router.route('/comment/:trick_id')
+
+    // login user
+    .get(function(req, res) {
+      
+      var Disqus = require('disqus');
+      console.log(req.params.trick_id);
+
+      var disqus = new Disqus({
+          api_secret : 'PzFVHmOfrnSZ5RKgkfs48Ys3s8UW116XlNPDLNVIIcsrzfFIiJyz002tqgpNY8vq',
+          api_key : 'GXrRIu20sO9HSPlZrmyI1eyujsxXWSm4lr5gtvvDFLsUfBNSGpAnOHKqwIZA3FUJ',
+          access_token : 'b114a1fc815d49de8ac0964d4aa88195'
+      });
+
+      disqus.request('posts/list', { forum : 'intellitricks'}, function(data) {
+        if (data.error) {
+            console.log('Something went wrong...');
+        } else {
+            console.log(data);
+            res.json(data);
+        }
+    });
+  });
 
 }
