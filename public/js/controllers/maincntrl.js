@@ -322,6 +322,24 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
   }
 
+  $scope.twitterShare = function(){
+
+    window.open(
+      'https://twitter.com/share?url='+encodeURIComponent('http://intellitricks.com')+'&amp;text='+encodeURIComponent('"' + $scope.post.title + ": " + $scope.post.description + "'") + '&amp;count=none/',
+      'twitter-share-dialog',
+      'width=626,height=436,top='+((screen.height - 436) / 2)+',left='+((screen.width - 626)/2 ));
+    return false;
+  }
+
+  $scope.facebookShare = function(){
+
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('http://intellitricks.com') +'&amp;t=' + encodeURIComponent('"' + $scope.post.title + ": " + $scope.post.description + "'"),
+      'facebook-share-dialog',
+      'width=626,height=436,top='+((screen.height - 436) / 2)+',left='+((screen.width - 626)/2 ));
+    return false;
+  }
+
 }])
 .controller('tricksCntrl', ['$scope', '$state', '$stateParams', 'ApiServ', function($scope, $state, $stateParams, ApiServ) {
   document.getElementById("recent").setAttribute("class","active");

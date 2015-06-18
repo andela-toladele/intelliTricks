@@ -138,7 +138,25 @@
             <li>
               <a ui-sref="category({id: post.category.id, name: post.category.name})">{{post.category.name}}</a>
             </li>
-          </ul>    
+          </ul>
+
+
+          <ul class="nav nav-list push-down">
+            <li>
+              <a href="#" class="btn btn-info btn-lg" ng-click="twitterShare()">
+                <i class="fa fa-twitter"></i> Share on Twitter
+              </a>
+            </li>
+          </ul>
+
+          <ul class="nav nav-list push-down">
+            <li>
+              <a href="#" class="btn btn-lg btn-primary" style="border-color: #4B7FCC; width:65%;" ng-click="facebookShare()">
+                <i class="fa fa-facebook"></i> Share on Facebook
+              </a>
+          </li>
+          </ul>
+
         </div>
       </div>
     </div>
