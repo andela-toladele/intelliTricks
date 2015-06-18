@@ -52,63 +52,19 @@
 
         </div>
 
-        <div id="messages-input-container" class="content-box">
-          <form id="message-form">                
-            <textarea autocorrect="off" autocomplete="off" spellcheck="true" style="overflow-y: hidden; height: 60px;" placeholder="Type your comment..." ng-model="comment"></textarea>
-
-            <div ng-show="invalidComment" style="color: red;">{{commentErrorMessage}}</div>
-            <div class="form-group">
-              <div class="text-right">
-                <button id="save-section" ng-click="postComment()" class="btn btn-primary ladda-button" data-style="expand-right">
-                  Post comment
-                </button>
-              </div>
-            </div>    
-          </form>
-        </div>
-
-        <div dir-paginate="commentItem in post.comments | orderBy:orderCrit:true | itemsPerPage : 15">  
-          <div class="post-body" style="margin: 1.5em 0">
-            <header>
-              <span class="post-byline">
-                <span class="author publisher-anchor-color"><b style="color: #288ce4">{{commentItem.commentBy}}</b></span>
-
-              </span>
-
-              <span class="post-meta">
-                <span class="time-ago" am-time-ago="commentItem.when"></span>
-              </span>
-
-            </header>
-
-            <div class="post-body-inner">
-              <div class="post-message-container">
-                <div class="publisher-anchor-color">
-                  <div class="post-message" dir="auto">
-                    <p style="text-align: justify; margin-left: 1em;">{{commentItem.text}}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-         
-            <li style="width: 6em" margin-top:"1.5em">
-              <a href="" class="list-group-item js-like-trick" style="padding:0; border:none;">
-                <span class="fa fa-heart"></span>
-                <span class="js-like-status" ng-show="true">
-                  Like
-                </span>
-                <span class="pull-right js-like-count">
-                  {{commentItem.likes.length}}
-                </span>
-              </a>
-            </li>
-          </div>
-        </div>
-
-
-        <div class="col-md-12 text-center">
-          <dir-pagination-controls boundary-links="true" template-url="/bower_components/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
-        </div>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES * * */
+            var disqus_shortname = 'intellitricks';
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>       
 
       </div>
 
@@ -151,7 +107,7 @@
 
           <ul class="nav nav-list push-down">
             <li>
-              <a href="#" class="btn btn-lg btn-primary" style="border-color: #4B7FCC; width:65%;" ng-click="facebookShare()">
+              <a href="#" class="btn btn-lg btn-primary" style="border-color: #4B7FCC;" ng-click="facebookShare()">
                 <i class="fa fa-facebook"></i> Share on Facebook
               </a>
           </li>
