@@ -4,14 +4,8 @@ myApp.controller('viewTrickCntrl', ['$rootScope', '$scope', '$state', '$statePar
   $scope.editMode = false;
   $scope.editPostStyle = "none";
   $scope.contentLoaded = false;
-  $scope.commentCount = 1;
-
-  console.log($scope.postId);
-
-  $scope.$watch('commentCount', function(){
-
-    console.log($scope.commentCount);
-  });
+  
+  console.log($scope.postId);  
 
   $scope.likeTrick = function(){
     
