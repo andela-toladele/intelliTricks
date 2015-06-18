@@ -1,5 +1,15 @@
-myApp.config(function($stateProvider, $urlRouterProvider){
+myApp.config(function($stateProvider, $urlRouterProvider,$provide,$locationProvider){
   
+
+  $provide.decorator('$sniffer', function($delegate) {
+            $delegate.history = false;
+            return $delegate;
+  });
+
+  $locationProvider
+    .html5Mode(true)
+    .hashPrefix('!');;
+
   $urlRouterProvider.otherwise("/home");
   
   $stateProvider.
