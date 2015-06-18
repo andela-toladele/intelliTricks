@@ -183,6 +183,7 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
   $scope.postId = $stateParams.id;
   $scope.editMode = false;
   $scope.editPostStyle = "none";
+  $scope.contentLoaded = false;
 
   console.log($scope.postId);
 
@@ -213,7 +214,9 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
   ApiServ.getTrick($scope.postId).success(function(data){
 
       console.log(data);
-      $scope.post = data;     
+      $scope.post = data;
+      $scope.url = "http://intellitricks.com/#/tricks?id=" + $scope.postId;
+      $scope.contentLoaded = true;   
     })
     .error(function(err, status){
        $state.go("home");
@@ -325,7 +328,7 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
   $scope.twitterShare = function(){
 
     window.open(
-      'https://twitter.com/share?url='+encodeURIComponent('http://intellitricks.com/#/tricks?id=' + $scope.postId)+'&amp;text='+encodeURIComponent("'" + $scope.post.title + ": " + $scope.post.description.substring(0, 40) + "...") + '&amp;count=none/',
+      'https://twitter.com/share?url='+encodeURIComponent($scope.url)+'&amp;text='+encodeURIComponent("'" + $scope.post.title + ": " + $scope.post.description.substring(0, 40) + "...") + '&amp;count=none/',
       'twitter-share-dialog',
       'width=626,height=436,top='+((screen.height - 436) / 2)+',left='+((screen.width - 626)/2 ));
     return false;
@@ -334,7 +337,7 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
   $scope.facebookShare = function(){
 
     window.open(
-      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('http://intellitricks.com/#/tricks?id=' + $scope.postId) +'&amp;text=' + encodeURIComponent("'" + $scope.post.title + ": " + $scope.post.description.substring(0, 40) + "...'"),
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent($scope.url) +'&amp;text=' + encodeURIComponent("'" + $scope.post.title + ": " + $scope.post.description.substring(0, 40) + "...'"),
       'facebook-share-dialog',
       'width=626,height=436,top='+((screen.height - 436) / 2)+',left='+((screen.width - 626)/2 ));
     return false;
@@ -364,7 +367,7 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
 
     ApiServ.getAllTricks().success(function(data){
       $scope.tricks = data;
-      $scope.apiCallReturned = true;     
+      $scope.apiCallReturned = true;       
     })
     .error(function(err){
       $scope.apiCallReturned = true;
