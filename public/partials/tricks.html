@@ -35,7 +35,7 @@
         <dir-pagination-controls boundary-links="true" template-url="/bower_components/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
 
-    <script src="public/js/vendor/masonry.pkgd.min.js"></script>
+    <script src="/js/vendor/masonry.pkgd.min.js"></script>
     <script>
       $(function(){$container=$(".js-trick-container");$container.masonry({gutter:0,itemSelector:".trick-card",columnWidth:".trick-card"});$(".js-goto-trick a").click(function(e){e.stopPropagation()});$(".js-goto-trick").click(function(e){e.preventDefault();var t="http://intellitricks.herokuapp.com";var n=$(this).data("slug");window.location=t+"/"+n})})
     </script>
