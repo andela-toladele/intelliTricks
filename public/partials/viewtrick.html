@@ -16,7 +16,7 @@
           </div>
           <p>{{post.description}}</p>
 
-          <div ng-show="!postEditMode">
+          <div style="display: {{viewPostStyle}}">
             <div hljs no-escape source="post.text"></div>
 
 
