@@ -4,8 +4,8 @@ myApp.controller('viewTrickCntrl', ['$rootScope', '$scope', '$state', '$statePar
   $scope.editMode = false;
 
   //Included due to ui ace edit mode conflicts on mobile
-  $scope.editPostStyle = "none";
-  $scope.viewPostStyle = "block";
+  var viewDiv = document.getElementById("viewDiv");
+  var editDiv = document.getElementById("editDiv");
 
   $scope.contentLoaded = false;
   
@@ -92,16 +92,16 @@ myApp.controller('viewTrickCntrl', ['$rootScope', '$scope', '$state', '$statePar
     $scope.postEditMode = true;
     $scope.tempPost = angular.copy($scope.post.text);
     //some awkward codes because of ui-ace editor not working properly with ng-show
-    $scope.editPostStyle = "block";
-    $scope.viewPostStyle = "none";
+    editDiv.style.display = "block";
+    viewDiv.style.display = "none";
     
   }
 
   $scope.cancelEditTrick = function(){
     $scope.postEditMode = false;
     $scope.post.text = angular.copy($scope.tempPost);
-    $scope.editPostStyle = "none";
-    $scope.viewPostStyle = "block";
+    editDiv.style.display = "none";
+    viewDiv.style.display = "block";
   }
 
   $scope.updateTrick = function(){
@@ -126,8 +126,8 @@ myApp.controller('viewTrickCntrl', ['$rootScope', '$scope', '$state', '$statePar
 
       $scope.postEditMode = false;
       
-      $scope.editPostStyle = "none";
-      $scope.viewPostStyle = "block";
+      editDiv.style.display = "none";
+      viewDiv.style.display = "block";
       $scope.post = data;
 
     })

@@ -16,7 +16,7 @@
           </div>
           <p>{{post.description}}</p>
 
-          <div style="display: {{viewPostStyle}}">
+          <div style="display: block" id="viewDiv">
             <div hljs no-escape source="post.text"></div>
 
 
@@ -32,7 +32,7 @@
 
           </div>
 
-          <div style="display: {{editPostStyle}}">
+          <div style="display: none" id="editDiv">
             <div class="editor" ui-ace="{ mode: 'javascript', theme: 'monokai' }" ng-model="post.text" style="margin-bottom: 5px"></div>
 
 
@@ -98,7 +98,7 @@
 
           <ul class="nav nav-list push-down">
             <li>
-              <a href="#" class="btn btn-lg btn-primary" style="border-color: #4B7FCC;" ng-click="facebookShare()">
+              <a href="#" class="btn btn-info btn-lg" ng-click="facebookShare()">
                 <i class="fa fa-facebook"></i> Share on Facebook
               </a>
           </li>
