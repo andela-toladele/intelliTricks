@@ -154,6 +154,8 @@ module.exports = function(router,passport) {
           if (err)
             return res.send(err);
 
+          post.viewed += 1;
+
           res.json(post);
         });
 
