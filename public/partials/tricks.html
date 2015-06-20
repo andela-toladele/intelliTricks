@@ -23,18 +23,15 @@
         <div dir-paginate="trick in filteredTricks = (tricks|filter:searchText|orderBy:orderCrit:true) | itemsPerPage : 9" >      
           <trick-Item trickobject="trick"></trick-Item> 
 
-          <div class="col-lg-12" ng-show="!filteredTricks.length && apiCallReturned">
+          
+              
+        </div>
+        <div class="col-lg-12" ng-show="!filteredTricks.length && apiCallReturned">
             <div class="alert alert-danger">
               Sorry, no tricks for you!
             </div>
           </div>   
-              
-        </div>
       </div>
-      
-
-          
-
     </div>
 
     <div class="col-md-12 text-center">
