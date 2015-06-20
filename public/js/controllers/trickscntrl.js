@@ -1,4 +1,4 @@
-myApp.controller('tricksCntrl', ['$scope', '$state', '$stateParams', 'ApiServ', function($scope, $state, $stateParams, ApiServ) {
+myApp.controller('tricksCntrl', ['$rootScope', '$scope', '$state', '$stateParams','$timeout', 'ApiServ', function($rootScope, $scope, $state, $stateParams, $timeout, ApiServ) {
   document.getElementById("recent").setAttribute("class","active");
   document.getElementById("popular").setAttribute("class","");
   document.getElementById("discussed").setAttribute("class","");
@@ -6,6 +6,8 @@ myApp.controller('tricksCntrl', ['$scope', '$state', '$stateParams', 'ApiServ', 
   document.getElementById("browse").setAttribute("class","");
   document.getElementById("createNew").setAttribute("class","");
   document.getElementById("categories").setAttribute("class","");
+
+  
 
  $scope.orderCrit = function(post) {
     var date = new Date(post.when);
@@ -85,5 +87,9 @@ myApp.controller('tricksCntrl', ['$scope', '$state', '$stateParams', 'ApiServ', 
 
         break;
       }
-    }
+
+      $timeout(function () {
+       $rootScope.$broadcast('masonry.reload');
+       }, 500);
+      }
 }]);
