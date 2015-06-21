@@ -22,6 +22,7 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
   }, true);
 
 
+
   $scope.logoutUser = function(){
     ApiServ.logout().success(function(data){
 
@@ -30,8 +31,13 @@ myApp.controller('LoginPaneCntrl', ['$rootScope', '$scope', 'ApiServ', function(
       $rootScope.userId = $scope.userId = null;
       $rootScope.userType = $scope.userType = null;
 
-    });
+      $scope.showLoggedOutAlert = true;
 
+    });
+  }
+
+  $scope.hideLoggedOutAlert = function(){
+    $scope.showLoggedOutAlert = false;    
   }
 
 }]);
