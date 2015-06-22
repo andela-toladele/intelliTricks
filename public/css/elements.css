@@ -14,7 +14,7 @@ white-space: normal;
 }
 
 @media only screen and (max-device-width: 480px) .trick-card {
-  width: 50%;
+  width: 48%;
 }
 
 .footer {
