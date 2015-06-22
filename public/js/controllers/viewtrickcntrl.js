@@ -3,20 +3,20 @@ myApp.controller('viewTrickCntrl', ['$rootScope', '$scope', '$state', '$statePar
   $scope.postId = $stateParams.id;
   $scope.editMode = false;
 
+  var aceModes = ['javascript', 'java', 'python', 'ruby', 'xml', 'php'];
+
+
   //Included due to ui ace edit mode conflicts on mobile
   var viewDiv = document.getElementById("viewDiv");
   var editDiv = document.getElementById("editDiv");
 
   $scope.contentLoaded = false;
   
-  console.log($scope.postId);  
-
   $scope.likeTrick = function(){
     
     if($rootScope.loggedIn && $scope.post){
 
       ApiServ.likeTrick($scope.postId).success(function(data){
-        console.log(data);
         $scope.post= data;
       });
     }
@@ -40,7 +40,16 @@ myApp.controller('viewTrickCntrl', ['$rootScope', '$scope', '$state', '$statePar
       console.log(data);
       $scope.post = data;
       $scope.url = "http://intellitricks.com/#!/tricks?id=" + $scope.postId;
-      $scope.contentLoaded = true;   
+      $scope.contentLoaded = true;
+
+      if(!$scope.post)
+        return;
+
+      if (aceModes.indexOf(angular.lowercase($scope.post.category.name)) !== -1){
+        $scope.aceModel = angular.lowercase($scope.post.category.name);
+      }else{
+        $scope.aceModel = 'javascript';
+      }
     })
     .error(function(err, status){
        $state.go("home");

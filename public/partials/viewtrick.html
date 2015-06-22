@@ -26,7 +26,7 @@
                   Edit Trick
                 </button>
 
-                <button type="submit" id="save-section" ng-show="isAdmin()" ng-click="deleteTrick()" class="btn btn-primary ladda-button" data-style="expand-right">
+                <button type="submit" id="save-section" ng-show="isAdmin()" ng-click="deleteTrick()" ng-confirm-click="You are deleting a post. This action is not reversible" class="btn btn-primary ladda-button" data-style="expand-right">
                   Delete Trick
                 </button>                
               </div>
@@ -35,7 +35,7 @@
           </div>
 
           <div style="display: none" id="editDiv">
-            <div class="editor" ui-ace="{ mode: 'javascript', theme: 'monokai' }" ng-model="post.text" style="margin-bottom: 5px"></div>
+            <div class="editor" ui-ace="{ mode: aceModel, theme: 'monokai' }" ng-model="post.text" style="margin-bottom: 5px"></div>
 
 
             <div ng-show="invalidPost" style="color: red;">{{postErrorMessage}}</div>
