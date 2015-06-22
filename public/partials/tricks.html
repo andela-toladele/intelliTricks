@@ -21,7 +21,7 @@
       <div masonry="{columnWidth: 10}">
       
         <div dir-paginate="trick in filteredTricks = (tricks|filter:searchText|orderBy:orderCrit:true) | itemsPerPage : 9" >      
-          <li trick-Item trickobject="trick"></li>              
+          <div trick-Item trickobject="trick"></div>              
         </div>
         <div class="col-lg-12" ng-show="!filteredTricks.length && apiCallReturned">
             <div class="alert alert-danger">
