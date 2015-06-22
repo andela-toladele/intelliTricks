@@ -79,6 +79,12 @@ myApp.factory('ApiServ', function($http){
 
   }
 
+  apiFactory.deleteTrick = function(postId){
+
+    return $http.delete("/api/tricks/delete/" + postId);
+
+  }
+
   return apiFactory;
 
 });

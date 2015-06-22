@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-lg-9 col-md-8">
       
-        <div class="content-box">
+        <div class="content-box" ng-show="post">
           <div class="trick-user">
             <div class="trick-user-data">
               <h1 class="page-title">
@@ -19,13 +19,15 @@
           <div style="display: block" id="viewDiv">
             <div hljs no-escape source="post.text"></div>
 
-
-
             <div class="form-group" ng-show="!postEditMode && canEditPost()">
               <div class="text-right">
 
                 <button type="submit" id="save-section" ng-click="showEditFields()" class="btn btn-primary ladda-button" data-style="expand-right">
                   Edit Trick
+                </button>
+
+                <button type="submit" id="save-section" ng-show="isAdmin()" ng-click="deleteTrick()" class="btn btn-primary ladda-button" data-style="expand-right">
+                  Delete Trick
                 </button>                
               </div>
             </div>
@@ -52,6 +54,12 @@
 
         </div>
 
+        <div class="col-lg-12" ng-show="!post">
+            <div class="alert alert-danger">
+              Trick deleted
+            </div>
+        </div>
+
         <dir-disqus disqus-shortname="intellitricks"
           disqus-identifier="{{postId}}"
           disqus-url="{{url}}"
@@ -64,7 +72,7 @@
                 
         <p class="text-muted text-center">Place your ads...</p>
 
-        <div class="content-box">
+        <div class="content-box" ng-show="post">
           <b>Stats</b>
           <ul class="list-group trick-stats">
             <a href="" ng-click="!canLike() || likeTrick()" class="list-group-item js-like-trick" data-liked="0">

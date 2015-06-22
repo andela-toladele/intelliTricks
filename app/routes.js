@@ -154,7 +154,8 @@ module.exports = function(router,passport) {
           if (err)
             return res.send(err);
 
-          post.viewed += 1;
+          if(post)
+            post.viewed += 1;
 
           res.json(post);
         });
@@ -300,6 +301,19 @@ module.exports = function(router,passport) {
       
     });
 
+    router.route('/tricks/delete/:post_id')
+
+    // post comment by a logged in user
+    .delete(AuthMethods.isAdmin, function(req, res) {
+
+      Post.remove({_id: req.params.post_id}, function(err){
+        if(err){
+          return res.send(err);
+        }
+        return res.json({message: 'Post deleted!'});
+
+      });      
+    });
 
     router.route('/categories/create')
   

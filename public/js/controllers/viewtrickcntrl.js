@@ -153,6 +153,33 @@ myApp.controller('viewTrickCntrl', ['$rootScope', '$scope', '$state', '$statePar
 
   }
 
+  $scope.isAdmin = function(){
+    return $scope.userType === "admin"
+  }
+
+  $scope.deleteTrick = function(){
+
+    $scope.postErrorMessage = "";
+    $scope.invalidPost = false;
+
+   
+    ApiServ.deleteTrick($scope.postId)
+    .success(function(data){
+
+      $scope.post = null;
+
+    })
+    .error(function(err, status){
+      $scope.invalidPost = true;
+      if(status == 401){
+        $scope.postErrorMessage = "Please login to as admin to delete trick";
+      }else{
+        $scope.postErrorMessage = "An error occured, please try again!";
+      }
+    });
+
+  }
+
   $scope.twitterShare = function(){
 
     window.open(

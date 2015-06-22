@@ -49,6 +49,7 @@
     <script src="/js/controllers/registercntrl.js"></script>
     <script src="/js/controllers/trickscntrl.js"></script>
     <script src="/js/controllers/viewtrickcntrl.js"></script>
+    <script src="/js/controllers/newtrickcntrl.js"></script>
     <script src="/bower_components/angular-utils-pagination/dirPagination.js"></script>
     <script src="/js/vendor/jquery.min.js"></script>
     <script src="/js/vendor/bootstrap.min.js"></script>
@@ -79,8 +80,11 @@
               <li id="categories"><a ui-sref="categories">Categories</a></li>
               <li id="createNew"><a ui-sref="newtrick">Create New</a></li>
 
-              <li class="visible-xs"><a ui-sref="register">Register</a></li>
-              <li class="visible-xs"><a ui-sref="login">Login</a></li>
+              <li class="visible-xs" ng-show="!loggedIn"><a ui-sref="register">Register</a></li>
+              <li class="visible-xs" ng-show="!loggedIn"><a ui-sref="login">Login</a></li>
+
+              <li class="visible-xs" ng-show="loggedIn"><b class="btn btn-primary">Welcome {{username}}!</b></li>
+              <li class="visible-xs" ng-show="loggedIn"><button ng-click="logoutUser()" class="btn btn-primary">Logout</button></li>
     
             </ul>
 
@@ -91,7 +95,7 @@
 
             <div class="navbar-right hidden-xs" ng-show="loggedIn">
               <b class="btn btn-primary">Welcome {{username}}!</b>
-              <button ng-click="logoutUser()" class="btn btn-primary">Logout</button>                  
+              <button ng-click="logoutUser()" class="btn btn-primary">Logout</button>              
             </div>
           </div>
         </div>

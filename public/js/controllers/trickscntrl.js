@@ -90,6 +90,6 @@ myApp.controller('tricksCntrl', ['$rootScope', '$scope', '$state', '$stateParams
 
       $timeout(function () {
        $rootScope.$broadcast('masonry.reload');
-       }, 300);
+       }, 500);
       }
 }]);

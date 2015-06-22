@@ -9,12 +9,12 @@ word-break: break-all;
 white-space: normal;
 }
 
-@media only screen and (max-device-width: 480px) .trick-card {
-  /*width: 50%;*/
-}
-
 .trick-card {
   width: 33.3%;
+}
+
+@media only screen and (max-device-width: 480px) .trick-card {
+  width: 50%;
 }
 
 .footer {
