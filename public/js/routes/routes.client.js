@@ -2,8 +2,8 @@ myApp.config(function($stateProvider, $urlRouterProvider,$provide,$locationProvi
   
 
   $provide.decorator('$sniffer', function($delegate) {
-            $delegate.history = false;
-            return $delegate;
+      $delegate.history = false;
+      return $delegate;
   });
 
   $locationProvider
@@ -24,7 +24,11 @@ myApp.config(function($stateProvider, $urlRouterProvider,$provide,$locationProvi
     state('newtrick',{
       url: '/createTrick',
       templateUrl: '/partials/createtrick.html',
-      controller: 'newTrickCntrl'
+      controller: function($rootScope, $state){
+        if(!$rootScope.loggedIn){
+          $state.go("login");
+        }
+      }
     }).
     state('login',{
       url: '/login',

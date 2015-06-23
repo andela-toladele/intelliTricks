@@ -1,10 +1,5 @@
 myApp.controller('newTrickCntrl', ['$rootScope', '$scope', '$state', 'ApiServ', function($rootScope, $scope, $state, ApiServ){
 
-  if(!$rootScope.loggedIn){
-    $state.go("login");
-  }
-
-
   var aceModes = ['javascript', 'java', 'python', 'ruby', 'xml', 'php'];
 
   $scope.aceModel = "javascript";
