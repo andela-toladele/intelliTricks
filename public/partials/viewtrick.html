@@ -80,6 +80,9 @@
                 <span class="js-like-status" ng-show="canLike()">
                   Like Trick
                 </span>
+                <span class="js-like-status" ng-show="!canLike() && userLoggedIn()">
+                  Liked
+                </span>
               <span class="pull-right js-like-count">
                 {{post.likes.length}}
               </span>
@@ -98,7 +101,7 @@
 
           <ul class="nav nav-list push-down">
             <li>
-              <a href="#" class="btn btn-info btn-lg" ng-click="twitterShare()">
+              <a href="#" class="btn btn-info btn-lg" style="color: #0c0" ng-click="twitterShare()">
                 <i class="fa fa-twitter"></i> Share on Twitter
               </a>
             </li>
@@ -106,7 +109,7 @@
 
           <ul class="nav nav-list push-down">
             <li>
-              <a href="#" class="btn btn-info btn-lg" ng-click="facebookShare()">
+              <a href="#" class="btn btn-info btn-lg" style="color: #0c0" ng-click="facebookShare()">
                 <i class="fa fa-facebook"></i> Share on Facebook
               </a>
           </li>

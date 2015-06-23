@@ -35,6 +35,10 @@ myApp.controller('viewTrickCntrl', ['$rootScope', '$scope', '$state', '$statePar
     return true;
   }
 
+  $scope.userLoggedIn = function(){
+    return $rootScope.loggedIn;
+  }
+
   ApiServ.getTrick($scope.postId).success(function(data){
 
       console.log(data);

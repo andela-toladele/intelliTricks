@@ -5,9 +5,13 @@ var myApp = angular.module('myApp', ['angularUtils.directives.dirPagination', 'u
     tabReplace: '    '
   });
 })
-.run(function($rootScope) {
+.run(function($rootScope, $location, $window) {
     $rootScope.loggedIn = false;
     $rootScope.userType = "";
     $rootScope.username = "";
     $rootScope.userId = "";
+
+    $rootScope.$on('$stateChangeSuccess', function() {
+      $window.ga('send', 'pageview', { page: $location.url() });
+    });
 });
